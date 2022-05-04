@@ -13,6 +13,25 @@ global.User = sequelize.define("User", {
     }
 
 })
+global.Board = sequelize.define("Board", {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    //제목
+    title: Sequelize.STRING,
+    //내용
+    body: Sequelize.TEXT,
+    //작성시간
+    writeTime: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+    }
+})
+
+
 sequelize.sync({
     alter: true
 })

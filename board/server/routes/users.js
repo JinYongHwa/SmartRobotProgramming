@@ -28,5 +28,26 @@ router.post("/join", async function (req, res) {
     result: "ok"
   })
 })
+router.post("/login", async function (req, res) {
+  console.log(req.body)
+  var user = await User.findOne({
+    where: {
+      id: req.body.id,
+      password: req.body.password
+    }
+  })
+  if (user == null) {
+    res.json({
+      result: "fail",
+      message: "아이디 또는 비밀번호가 잘못되었습니다."
+    })
+    return
+  }
+  res.json({
+    result: "ok"
+  })
+
+
+})
 
 module.exports = router;
