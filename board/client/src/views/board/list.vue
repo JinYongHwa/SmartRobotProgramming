@@ -20,6 +20,13 @@
         </tr>
       </tbody>
     </table>
+
+    <v-pagination
+      v-model="page"
+      @input="changePage"
+      :length="pageCount"
+    ></v-pagination>
+
     <div class="text-right mt-2">
       <v-btn color="primary" @click="moveWrite">글쓰기</v-btn>
     </div>
@@ -31,6 +38,8 @@ import moment from "moment";
 export default {
   data() {
     return {
+      page: 1,
+      pageCount: 0,
       boardList: [],
     };
   },
@@ -50,12 +59,20 @@ export default {
     //     writeDate: "2020-01-01",
     //   });
     // }
-    this.axios.get("/api/board/list").then((result) => {
+    this.axios.post("/api/board/list").then((result) => {
       console.log(result);
-      this.boardList = result.data;
+      this.boardList = result.data.boardList;
+      this.pageCount = result.data.pageCount;
     });
   },
   methods: {
+    changePage(page) {
+      console.log(page);
+      this.axios.post("/api/board/list", { page: page }).then((result) => {
+        this.boardList = result.data.boardList;
+        this.pageCount = result.data.pageCount;
+      });
+    },
     moveWrite() {
       this.$router.push("/board/write");
     },

@@ -7,12 +7,31 @@ router.post("/write", async function (req, res) {
         result: "ok"
     })
 })
-router.get("/list", async function (req, res) {
-    // var boardList = [
-    //     { id: "1", title: "제목1", writer: "진용화" }
-    // ]
-    var boardList = await Board.findAll()
-    res.json(boardList)
+var Pager = require("node-jyh-pager")
+var pager = new Pager({
+    itemPerPage: 5
+})
+
+router.post("/list", async function (req, res) {
+
+    var page = req.body.page
+    if (!page) {
+        page = 1
+    }
+    var itemPerPage = 5
+    var offset = pager.getSkip(page)
+    var boardList = await Board.findAll({
+        limit: itemPerPage,
+        offset: offset,
+        orders: [["writeTime", "DESC"]]
+    })
+    var count = await Board.count()   // select count(*) from Boards
+    var nav = pager.getBottomNav(page, count)
+    var pageCount = nav.totalPage
+    res.json({
+        boardList: boardList,
+        pageCount: pageCount
+    })
 })
 
 module.exports = router;
