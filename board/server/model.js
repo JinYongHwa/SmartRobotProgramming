@@ -28,6 +28,10 @@ global.Board = sequelize.define("Board", {
     writeTime: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
+    },
+    viewCount: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
     }
 })
 
