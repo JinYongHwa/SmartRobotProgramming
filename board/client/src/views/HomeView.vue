@@ -61,6 +61,7 @@ export default {
 .background {
   background: #eeeeee;
 }
+
 .background .form {
   background: white;
   padding: 20px;
